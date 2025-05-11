@@ -41,6 +41,11 @@ finish = False
 clock = time.Clock()
 fps = 60
 
+ball = GameSprite('', 200, 200, 5, 50, 50)
+
+speed_x = ball.speed
+speed_y = ball.speed
+
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -49,15 +54,22 @@ while game:
     if finish != True:  
         window.blit(background, (0, 0))
 
-        playerr.reset()
-        playerl.reset()
-
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
+        
         playerr.updater()
         playerl.updatel()
+
+        if ball.rect.y > win_height - 50 or ball.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(playerl, ball) or sprite.collide_rect(playerr, ball):
+            speed_x *= -1
         
+        playerr.reset()
+        playerl.reset()
+        ball.reset() 
 
     display.update()
     clock.tick(fps)
 
     
-
